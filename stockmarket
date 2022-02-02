@@ -1,0 +1,69 @@
+var syms = stock.getSymbols();
+var forecast;
+var volatility;
+var askprice;
+var position = [];
+var gain;
+var maxshares;
+var moneyavailable;
+var sharestobuy;
+var sgain;
+
+while (true) {
+
+	for (i = 0; i < syms.length; ++i) {
+
+		position = stock.getPosition(syms[i]);
+		moneyavailable = getServerMoneyAvailable("home");
+		volatility = stock.getVolatility(syms[i]);
+		forecast = stock.getForecast(syms[i]);
+		askprice = stock.getAskPrice(syms[i]);
+		gain = stock.getSaleGain(syms[i], position[0], "Long");
+		sgain = stock.getSaleGain(syms[i], position[3], "Short");
+		maxshares = stock.getMaxShares(syms[i]);
+
+		print(syms[i]);
+		print(volatility);
+		print(askprice);
+		print(forecast);
+		print(position);
+		print(gain);
+
+		if (forecast > 0.55) {
+			if (askprice < 1000000) {
+				if (maxshares > position[0]) {
+					if (moneyavailable < (maxshares * askprice)) {
+						sharestobuy = Math.round(moneyavailable / askprice - 1);
+						stock.buy(syms[i], sharestobuy - position[0]);
+					}
+					if (moneyavailable > (maxshares * askprice)) {
+						stock.buy(syms[i], maxshares - position[0]);
+					}
+				}
+			}
+		}
+
+		if (forecast < 0.53) {
+			stock.sell(syms[i], position[0])
+		}
+
+		//      if (forecast < 0.43) {
+		//          if (askprice < 20000) {
+		//              if (maxshares > position[2]) {
+		//                  if (moneyavailable < (maxshares * askprice)) {
+		//                      sharestobuy = Math.round(moneyavailable / askprice - 1);
+		//                      stock.short(syms[i]), sharestobuy;
+		//                  }
+		////                    if (moneyavailable > (maxshares * askprice)) {
+		//                      stock.short(syms[i]), maxshares - position[2];
+		//                  }
+		//
+		//              }
+		//          }
+		//      }
+		///     if (sgain > 10000000000) {
+		//          stock.sellShort(syms[i], position[3])
+
+	}
+
+}
