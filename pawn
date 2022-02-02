@@ -1,0 +1,25 @@
+var servers = [ 
+"n00dles", "foodnstuff", "sigma-cosmetics", "joesguns", "hong-fang-tea", "harakiri-sushi", "harakiri-sushi", 
+"iron-gym", "zer0", "phantasy", "omega-net", "nectar-net", "neo-net", "max-hardware", "silver-helix",
+"the-hub", "crush-fitness", "netlink", "rothman-uni", "millenium-fitness","comptek",
+"catalyst", "summit-uni", "johnson-ortho", "aevum-police", "syscore", "galactic-cyber", "millenium-fitness", "deltaone",
+"rothman-uni", "alpha-ent", "aerocorp", "unitalife", "defcomm", "icarus", "taiyang-digital",
+"zb-def", "unitalife", "univ-energy", "solaris", "microdyne", "aerocorp", "galactic-cyber",
+"titan-labs", "infocomm", "zeus-med", "applied-energetics", "nova-med", "omnia", "helios", "stormtech",
+"vitalife", "omnitek", "The-Cave", "fulcrumtech", "blade", "clarkinc", "kuai-gong", "fulcrumassets",
+"b-and-a", "megacorp", "powerhouse-fitness", "ecorp", "4sigma", "nwo", 
+];
+
+var host = args[0];
+var threads = args[1];
+var i = 0;
+
+scp("n00dles.script", host);
+
+///run hackingloop
+while (i < servers.length) {
+	// execute script on the target server
+		exec("n00dles.script", host, threads, servers[i]);
+	// increment the counter to move to the next server
+	i++;
+}
