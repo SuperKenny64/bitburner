@@ -1,0 +1,82 @@
+var servers = [
+
+"n00dles", "foodnstuff", "sigma-cosmetics", "joesguns", "hong-fang-tea", "harakiri-sushi", "harakiri-sushi", "iron-gym",
+"zer0", "phantasy", "omega-net", "nectar-net", "neo-net", "max-hardware", "silver-helix", "CSEC",
+"avmnite-02h", "the-hub", "crush-fitness", "I.I.I.I", "netlink", "rothman-uni", "millenium-fitness","comptek",
+"catalyst", "summit-uni", "johnson-ortho", "aevum-police", "syscore", "galactic-cyber", "millenium-fitness", "deltaone",
+"rothman-uni", "alpha-ent", "aerocorp", "unitalife", "defcomm", "icarus", "taiyang-digital",
+"zb-def", "unitalife", "univ-energy", "solaris", "microdyne", "aerocorp", "galactic-cyber",
+"titan-labs", "infocomm", "zeus-med", "applied-energetics", "nova-med", "omnia", "helios", "stormtech",
+"vitalife", "omnitek", "The-Cave", "fulcrumtech", "blade", "clarkinc", "kuai-gong", "fulcrumassets",
+"b-and-a", "megacorp", "powerhouse-fitness", "ecorp", "4sigma", "nwo", 
+
+];
+
+// count how many programs we have to open ports
+function countPrograms() {
+	var count = 0;
+
+	if (fileExists("BruteSSH.exe"))
+		count++;
+	if (fileExists("FTPCrack.exe"))
+		count++;
+	if (fileExists("relaySMTP.exe"))
+		count++;
+	if (fileExists("HTTPWorm.exe"))
+		count++;
+	if (fileExists("SQLInject.exe"))
+		count++;
+
+	return count;
+}
+
+// try to open every port we can
+function breakPorts(hostname) {
+	if (fileExists("BruteSSH.exe"))
+		brutessh(hostname);
+	if (fileExists("FTPCrack.exe"))
+		ftpcrack(hostname);
+	if (fileExists("relaySMTP.exe"))
+		relaysmtp(hostname);
+	if (fileExists("HTTPWorm.exe"))
+		httpworm(hostname);
+	if (fileExists("SQLInject.exe"))
+		sqlinject(hostname);
+}
+
+var ram = 0;
+var cost = 0;
+var threads = 1;
+var i = 0;
+
+
+///run hackingloop
+while (i < servers.length) {
+	// check if we have the required skill to hack the server
+	if (getHackingLevel() >= getServerRequiredHackingLevel(servers[i])) {
+		// sleep until we have enough port openers to nuke the server
+		while (countPrograms() < getServerNumPortsRequired(servers[i])) {
+			sleep(20000);
+		}
+		// we now have enough port openers, so open ports and nuke the server
+		breakPorts(servers[i]);
+		nuke(servers[i]);
+
+		// copy the hacking script over
+		scp("n00dles.script", servers[i]);
+
+		// figure out how many threads we can run of our script
+		killall(servers[i]);
+		ram = getServerRam(servers[i]);
+		cost = getScriptRam("n00dles.script");
+		threads = Math.floor((ram[0] - ram[1]) / cost);
+
+		if (threads > 0) {
+			// execute script on the target server
+			exec("n00dles.script", servers[i], threads, servers[i]);
+		}
+
+		// increment the counter to move to the next server
+		i++;
+	}
+}
