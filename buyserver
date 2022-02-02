@@ -1,0 +1,6 @@
+var ram = Math.pow(2,args[0]);
+var hn = "pawn";
+
+for (i = 0; i < 1; ++i) {
+    purchaseServer(hn, ram);
+}
