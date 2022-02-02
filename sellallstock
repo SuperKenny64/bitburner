@@ -1,0 +1,10 @@
+var syms = stock.getSymbols();
+var maxshares;
+var i = 0;
+
+while (i < syms.length) {
+
+	maxshares = stock.getMaxShares(syms[i]);
+	stock.sell(syms[i], maxshares);
+	i++;
+}
